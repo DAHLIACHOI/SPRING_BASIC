@@ -13,13 +13,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository;
-    //private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
-    //private final DiscountPolicy discountPolicy = new RateDiscountPolicy(); //OCP위반
-    private final DiscountPolicy discountPolicy; // DIP지키고 있음, 순전히 인터페이스에만 의존
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy; // DIP지키고 있음, 순전히 인터페이스에만 의존
+
+    //@Autowired //생성자 하나일 때는 수정가능
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy){
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
